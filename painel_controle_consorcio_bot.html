@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel Consórcio Bot</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #111827;
+      --muted: #94a3b8;
+      --text: #f8fafc;
+      --green: #16a34a;
+      --red: #dc2626;
+      --blue: #2563eb;
+      --amber: #d97706;
+      --border: #1f2937;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #0f172a 0%, #111827 100%);
+      color: var(--text);
+      padding: 16px;
+    }
+    .wrap {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 24px;
+      margin: 0 0 8px;
+    }
+    .sub {
+      color: var(--muted);
+      margin-bottom: 18px;
+      line-height: 1.45;
+    }
+    .status-bar {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+      margin-bottom: 16px;
+      font-size: 14px;
+    }
+    .grid {
+      display: grid;
+      gap: 14px;
+    }
+    .card {
+      background: rgba(17,24,39,0.95);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    }
+    .card h2 {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+    .card p {
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .btn-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    button {
+      border: none;
+      border-radius: 14px;
+      padding: 14px 12px;
+      font-size: 15px;
+      font-weight: 700;
+      color: white;
+      cursor: pointer;
+      min-height: 48px;
+    }
+    .start { background: var(--green); }
+    .stop { background: var(--red); }
+    .status { background: var(--blue); }
+    .warn { background: var(--amber); }
+    .wide { width: 100%; margin-top: 10px; }
+    pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+      background: rgba(0,0,0,0.25);
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 12px;
+      line-height: 1.45;
+      margin-top: 12px;
+      border: 1px solid var(--border);
+      max-height: 280px;
+      overflow: auto;
+    }
+    .footer {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    @media (min-width: 700px) {
+      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Painel Consórcio Bot</h1>
+    <div class="sub">
+      Controle rápido no celular para iniciar, parar e verificar os robôs. Use o botão de status para confirmar o que está rodando.
+    </div>
+
+    <div class="status-bar" id="summary">
+      Carregue o status para ver os processos ativos.
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h2>Monitor Urgência</h2>
+        <p>Para grupos quentes com abas abertas.</p>
+        <div class="btn-row">
+          <button class="start" onclick="callRoute('/start/monitor')">Iniciar</button>
+          <button class="stop" onclick="callRoute('/stop/monitor')">Parar</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Crédito Alto</h2>
+        <p>Varredura dedicada para grupos de crédito alto.</p>
+        <div class="btn-row">
+          <button class="start" onclick="callRoute('/start/alto')">Iniciar</button>
+          <button class="stop" onclick="callRoute('/stop/alto')">Parar</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Lote 1</h2>
+        <p>Grupos do primeiro bloco configurado.</p>
+        <div class="btn-row">
+          <button class="start" onclick="callRoute('/start/lote1')">Iniciar</button>
+          <button class="stop" onclick="callRoute('/stop/lote1')">Parar</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Lote 2</h2>
+        <p>Grupos do segundo bloco configurado.</p>
+        <div class="btn-row">
+          <button class="start" onclick="callRoute('/start/lote2')">Iniciar</button>
+          <button class="stop" onclick="callRoute('/stop/lote2')">Parar</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Lote 3</h2>
+        <p>Grupos do terceiro bloco configurado.</p>
+        <div class="btn-row">
+          <button class="start" onclick="callRoute('/start/lote3')">Iniciar</button>
+          <button class="stop" onclick="callRoute('/stop/lote3')">Parar</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Lote 4</h2>
+        <p>Grupos do quarto bloco configurado.</p>
+        <div class="btn-row">
+          <button class="start" onclick="callRoute('/start/lote4')">Iniciar</button>
+          <button class="stop" onclick="callRoute('/stop/lote4')">Parar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <h2>Status e emergência</h2>
+      <p>Use o status para ver os processos ativos. O botão de parada geral tenta encerrar todos.</p>
+      <div class="btn-row">
+        <button class="status" onclick="loadStatus()">Atualizar status</button>
+        <button class="warn" onclick="stopAll()">Parar todos</button>
+      </div>
+      <pre id="output">Sem ações ainda.</pre>
+    </div>
+
+    <div class="footer">
+      Dica: para produção, hospede esta página em um lugar fixo ou abra no celular e salve nos favoritos. Os alertas de vaga/reserva continuam vindo pelo Telegram.
+    </div>
+  </div>
+
+  <script>
+    const BASE = 'https://bot.prospectaflow.ai';
+    const output = document.getElementById('output');
+    const summary = document.getElementById('summary');
+
+    function setOutput(text) {
+      output.textContent = text;
+    }
+
+    async function callRoute(route) {
+      setOutput('Executando: ' + route + ' ...');
+      try {
+        const res = await fetch(BASE + route, { method: 'GET' });
+        const data = await res.json();
+        setOutput(JSON.stringify(data, null, 2));
+        await loadStatus();
+      } catch (err) {
+        setOutput('Erro ao chamar ' + route + '\n\n' + err.message);
+      }
+    }
+
+    async function loadStatus() {
+      try {
+        const res = await fetch(BASE + '/status');
+        const data = await res.json();
+        setOutput(JSON.stringify(data, null, 2));
+
+        if (!data.processes || data.processes.length === 0) {
+          summary.textContent = 'Nenhum robô rodando no momento.';
+          return;
+        }
+
+        const nomes = data.processes.map(p => p.name).join(', ');
+        summary.textContent = `Rodando agora: ${nomes}`;
+      } catch (err) {
+        summary.textContent = 'Falha ao carregar status.';
+        setOutput('Erro ao carregar status\n\n' + err.message);
+      }
+    }
+
+    async function stopAll() {
+      const names = ['monitor', 'alto', 'lote1', 'lote2', 'lote3', 'lote4'];
+      const results = [];
+
+      for (const name of names) {
+        try {
+          const res = await fetch(BASE + '/stop/' + name, { method: 'GET' });
+          const data = await res.json();
+          results.push({ name, data });
+        } catch (err) {
+          results.push({ name, error: err.message });
+        }
+      }
+
+      setOutput(JSON.stringify(results, null, 2));
+      await loadStatus();
+    }
+
+    loadStatus();
+  </script>
+</body>
+</html>
