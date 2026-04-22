@@ -208,13 +208,16 @@
         cache: 'no-store',
         mode: 'cors'
       });
+
+      if (!res.ok) {
+        throw new Error('Servidor retornou erro: ' + res.status);
+      }
+
       const data = await res.json();
       setOutput(JSON.stringify(data, null, 2));
       await loadStatus();
     } catch (err) {
-      setOutput('Erro ao chamar ' + route + '
-
-' + err.message);
+      setOutput('Erro ao chamar ' + route + '\n\n' + err.message);
     }
   }
 
@@ -225,6 +228,11 @@
         cache: 'no-store',
         mode: 'cors'
       });
+
+      if (!res.ok) {
+        throw new Error('Servidor retornou erro: ' + res.status);
+      }
+
       const data = await res.json();
       setOutput(JSON.stringify(data, null, 2));
 
@@ -246,27 +254,25 @@
     const results = [];
 
     for (const name of names) {
-    try {
-      const res = await fetch(BASE + '/stop/' + name, {
-        method: 'GET',
-        cache: 'no-store',
-        mode: 'cors'
-      });
-      const data = await res.json();
-      results.push({ name, data });
-    } catch (err) {
-      results.push({ name, error: err.message });
-    }
-  }
+      try {
+        const res = await fetch(BASE + '/stop/' + name, {
+          method: 'GET',
+          cache: 'no-store',
+          mode: 'cors'
+        });
 
-  setOutput(JSON.stringify(results, null, 2));
-  await loadStatus();
+        const data = await res.json();
+        results.push({ name, data });
+      } catch (err) {
+        results.push({ name, error: err.message });
+      }
+    }
 
     setOutput(JSON.stringify(results, null, 2));
     await loadStatus();
   }
 
-  loadStatus();
+  window.onload = loadStatus;
 </script>
 </body>
 </html>
