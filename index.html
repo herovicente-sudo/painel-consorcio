@@ -204,18 +204,22 @@
     async function callRoute(route) {
       setOutput('Executando: ' + route + ' ...');
       try {
-        const res = await fetch(BASE + route, { method: 'GET', cache: 'no-store' });
+        const res = await fetch(BASE + route, {
+          method: 'GET',
+          cache: 'no-store',
+          mode: 'cors'
+        });
         const data = await res.json();
         setOutput(JSON.stringify(data, null, 2));
         await loadStatus();
-      } catch (err) {
-        setOutput('Erro ao chamar ' + route + '\n\n' + err.message);
-      }
-    }
 
     async function loadStatus() {
       try {
-        const res = await fetch(BASE + '/status', NO_CACHE);
+        const res = await fetch(BASE + '/status', {
+          method: 'GET',
+          cache: 'no-store',
+          mode: 'cors'
+        });
         const data = await res.json();
         setOutput(JSON.stringify(data, null, 2));
 
@@ -238,7 +242,11 @@
 
       for (const name of names) {
         try {
-          const res = await fetch(BASE + '/stop/' + name, { method: 'GET', cache: 'no-store' });
+          const res = await fetch(BASE + '/stop/' + name, {
+            method: 'GET',
+            cache: 'no-store',
+            mode: 'cors'
+          });
           const data = await res.json();
           results.push({ name, data });
         } catch (err) {
