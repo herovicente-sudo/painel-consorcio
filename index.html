@@ -192,73 +192,76 @@
   </div>
 
   <script>
-    const BASE = 'https://bot.prospectaflow.ai';
-    const NO_CACHE = { cache: 'no-store' };
-    const output = document.getElementById('output');
-    const summary = document.getElementById('summary');
+  const BASE = 'https://bot.prospectaflow.ai';
+  const output = document.getElementById('output');
+  const summary = document.getElementById('summary');
 
-    function setOutput(text) {
-      output.textContent = text;
-    }
+  function setOutput(text) {
+    output.textContent = text;
+  }
 
-    async function callRoute(route) {
-      setOutput('Executando: ' + route + ' ...');
-      try {
-        const res = await fetch(BASE + route, {
-          method: 'GET',
-          cache: 'no-store',
-          mode: 'cors'
-        });
-        const data = await res.json();
-        setOutput(JSON.stringify(data, null, 2));
-        await loadStatus();
-
-    async function loadStatus() {
-      try {
-        const res = await fetch(BASE + '/status', {
-          method: 'GET',
-          cache: 'no-store',
-          mode: 'cors'
-        });
-        const data = await res.json();
-        setOutput(JSON.stringify(data, null, 2));
-
-        if (!data.processes || data.processes.length === 0) {
-          summary.textContent = 'Nenhum robô rodando no momento.';
-          return;
-        }
-
-        const nomes = data.processes.map(p => p.name).join(', ');
-        summary.textContent = `Rodando agora: ${nomes}`;
-      } catch (err) {
-        summary.textContent = 'Falha ao carregar status.';
-        setOutput('Erro ao carregar status\n\n' + err.message);
-      }
-    }
-
-    async function stopAll() {
-      const names = ['monitor', 'alto', 'lote1', 'lote2', 'lote3', 'lote4'];
-      const results = [];
-
-      for (const name of names) {
-        try {
-          const res = await fetch(BASE + '/stop/' + name, {
-            method: 'GET',
-            cache: 'no-store',
-            mode: 'cors'
-          });
-          const data = await res.json();
-          results.push({ name, data });
-        } catch (err) {
-          results.push({ name, error: err.message });
-        }
-      }
-
-      setOutput(JSON.stringify(results, null, 2));
+  async function callRoute(route) {
+    setOutput('Executando: ' + route + ' ...');
+    try {
+      const res = await fetch(BASE + route, {
+        method: 'GET',
+        cache: 'no-store',
+        mode: 'cors'
+      });
+      const data = await res.json();
+      setOutput(JSON.stringify(data, null, 2));
       await loadStatus();
+    } catch (err) {
+      setOutput('Erro ao chamar ' + route + '\n\n' + err.message);
+    }
+  }
+
+  async function loadStatus() {
+    try {
+      const res = await fetch(BASE + '/status', {
+        method: 'GET',
+        cache: 'no-store',
+        mode: 'cors'
+      });
+      const data = await res.json();
+      setOutput(JSON.stringify(data, null, 2));
+
+      if (!data.processes || data.processes.length === 0) {
+        summary.textContent = 'Nenhum robô rodando no momento.';
+        return;
+      }
+
+      const nomes = data.processes.map(p => p.name).join(', ');
+      summary.textContent = `Rodando agora: ${nomes}`;
+    } catch (err) {
+      summary.textContent = 'Falha ao carregar status.';
+      setOutput('Erro ao carregar status\n\n' + err.message);
+    }
+  }
+
+  async function stopAll() {
+    const names = ['monitor', 'alto', 'lote1', 'lote2', 'lote3', 'lote4'];
+    const results = [];
+
+    for (const name of names) {
+      try {
+        const res = await fetch(BASE + '/stop/' + name, {
+          method: 'GET',
+          cache: 'no-store',
+          mode: 'cors'
+        });
+        const data = await res.json();
+        results.push({ name, data });
+      } catch (err) {
+        results.push({ name, error: err.message });
+      }
     }
 
-    loadStatus();
-  </script>
+    setOutput(JSON.stringify(results, null, 2));
+    await loadStatus();
+  }
+
+  loadStatus();
+</script>
 </body>
 </html>
