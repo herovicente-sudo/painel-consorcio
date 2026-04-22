@@ -212,7 +212,9 @@
       setOutput(JSON.stringify(data, null, 2));
       await loadStatus();
     } catch (err) {
-      setOutput('Erro ao chamar ' + route + '\n\n' + err.message);
+      setOutput('Erro ao chamar ' + route + '
+
+' + err.message);
     }
   }
 
@@ -244,18 +246,21 @@
     const results = [];
 
     for (const name of names) {
-      try {
-        const res = await fetch(BASE + '/stop/' + name, {
-          method: 'GET',
-          cache: 'no-store',
-          mode: 'cors'
-        });
-        const data = await res.json();
-        results.push({ name, data });
-      } catch (err) {
-        results.push({ name, error: err.message });
-      }
+    try {
+      const res = await fetch(BASE + '/stop/' + name, {
+        method: 'GET',
+        cache: 'no-store',
+        mode: 'cors'
+      });
+      const data = await res.json();
+      results.push({ name, data });
+    } catch (err) {
+      results.push({ name, error: err.message });
     }
+  }
+
+  setOutput(JSON.stringify(results, null, 2));
+  await loadStatus();
 
     setOutput(JSON.stringify(results, null, 2));
     await loadStatus();
@@ -265,3 +270,4 @@
 </script>
 </body>
 </html>
+
