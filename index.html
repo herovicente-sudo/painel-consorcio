@@ -176,6 +176,15 @@
       </div>
     </div>
 
+      <div class="card">
+        <h2>Monitor Lista</h2>
+        <p>Varredura completa da lista principal com ciclo automático.</p>
+        <div class="btn-row">
+          <button class="start" onclick="callRoute('/start/monitor_lista')">Iniciar</button>
+          <button class="stop" onclick="callRoute('/stop/monitor_lista')">Parar</button>
+        </div>
+      </div>
+    
     <div class="card" style="margin-top:14px;">
       <h2>Status e emergência</h2>
       <p>Use o status para ver os processos ativos. O botão de parada geral tenta encerrar todos.</p>
@@ -250,7 +259,7 @@
   }
 
   async function stopAll() {
-    const names = ['monitor', 'alto', 'lote1', 'lote2', 'lote3', 'lote4'];
+    const names = ['monitor_lista', 'monitor', 'alto', 'lote1', 'lote2', 'lote3', 'lote4'];
     const results = [];
 
     for (const name of names) {
